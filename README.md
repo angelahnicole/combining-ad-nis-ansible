@@ -20,7 +20,7 @@ This has the variables that all hosts will use for the ad, nis, and join roles. 
 # group_vars/all.yml.example
 
 nis_domain: mynisdomain
-ntp_server: mynisdomain.com
+ntp_server: myntpdomain.com
 ad_domain: ADDOMAIN.COM
 # be sure to include these variables in your own group_vars/vault.yml file:
 # vault_nis_servers:
