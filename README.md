@@ -53,6 +53,10 @@ For more information on using `ansible-vault`, please visit this the ansible doc
 
 This, as usual, contains the host information of the machines that will run this playbook (i.e. the inventory)
 
+## Provision the machine(s) in hosts
+
+Before running this playbook, you have to provision the machines in your hosts file in Active Directory in Windows, as I haven't found a way to automate this. All you need to do is add a computer under the AD domain and make it the same name as the hostname of the linux machine.
+
 ## Running the playbook
 
 Currently on my todo... still in the process of creating it.
