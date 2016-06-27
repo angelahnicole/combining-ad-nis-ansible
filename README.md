@@ -35,8 +35,8 @@ You will also need to create a vault.yml file with the following variables insid
 ```yaml
 # group_vars/vault.yml
 
-vault_ad_cfc_user: <cfc user name>
-vault_ad_cfc_pass: <cfc password>
+vault_ad_user: <AD username>
+vault_ad_pass: <AD password>
 ```
 
 It is recommended that you create this file using `ansible-vault` like so:
