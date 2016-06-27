@@ -47,7 +47,7 @@ vault_ad_cfc_pass: "<cfc password>"
 
 It is recommended that you create this file using `ansible-vault` like so:
 
-```
+```bash
 $ ansible-vault create group_vars/vault.yml
 ```
 
