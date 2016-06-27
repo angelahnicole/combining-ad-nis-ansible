@@ -43,6 +43,7 @@ vault_nis_servers:
   - ip: "<nis slave/server ip address>"
 vault_ad_cfc_user: "<cfc user name>"
 vault_ad_cfc_pass: "<cfc password>"
+```
 
 It is recommended that you create this file using `ansible-vault` like so:
 
