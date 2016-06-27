@@ -23,9 +23,9 @@ ntp_server: mynisdomain.com
 ad_domain: ADDOMAIN.COM
 # be sure to include these variables in your own group_vars/vault.yml file:
 # vault_nis_servers:
-#   - ip: <nis slave/server>
-#   - ip: <nis slave/server>
-#   - ip: <nis slave/server>
+#   - ip: <nis slave/server ip address>
+#   - ip: <nis slave/server ip address>
+#   - ip: <nis slave/server ip address>
 #   <and so on>
 # vault_ad_cfc_user: <cfc user name>
 # vault_ad_cfc_pass: <cfc password>
@@ -38,9 +38,9 @@ As the all.yml.example comments allude, you will need to create a vault.yml file
 ```yaml
 # group_vars/vault.yml
 vault_nis_servers:
-  - ip: "<nis slave/server>"
-  - ip: "<nis slave/server>"
-  - ip: "<nis slave/server>"
+  - ip: "<nis slave/server ip address>"
+  - ip: "<nis slave/server ip address>"
+  - ip: "<nis slave/server ip address>"
 vault_ad_cfc_user: "<cfc user name>"
 vault_ad_cfc_pass: "<cfc password>"
 
