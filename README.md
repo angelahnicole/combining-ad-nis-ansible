@@ -20,29 +20,21 @@ This has the variables that all hosts will use for the ad, nis, and join roles. 
 # group_vars/all.yml.example
 
 nis_domain: mynisdomain
-ntp_server: myntpdomain.com
+ntp_server: myntpserver.com
 ad_domain: ADDOMAIN.COM
-# be sure to include these variables in your own group_vars/vault.yml file:
-# vault_nis_servers:
-#   - ip: <nis slave/server ip address>
-#   - ip: <nis slave/server ip address>
-#   - ip: <nis slave/server ip address>
-#   <and so on>
-# vault_ad_cfc_user: <cfc user name>
-# vault_ad_cfc_pass: <cfc password>
+nis_servers:
+  - addr: mynisserver.com
+  - addr: mynisslave.00.com
+  - addr: mynisslave.01.com
 ```
 
 ### vault.yml
 
-As the all.yml.example comments allude, you will need to create a vault.yml file with the following variables inside:
+You will also need to create a vault.yml file with the following variables inside:
 
 ```yaml
 # group_vars/vault.yml
 
-vault_nis_servers:
-  - ip: "<nis slave/server ip address>"
-  - ip: "<nis slave/server ip address>"
-  - ip: "<nis slave/server ip address>"
 vault_ad_cfc_user: "<cfc user name>"
 vault_ad_cfc_pass: "<cfc password>"
 ```
