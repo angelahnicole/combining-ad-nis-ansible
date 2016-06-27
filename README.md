@@ -18,6 +18,7 @@ This has the variables that all hosts will use for the ad, nis, and join roles. 
 
 ```yaml
 # group_vars/all.yml.example
+
 nis_domain: mynisdomain
 ntp_server: mynisdomain.com
 ad_domain: ADDOMAIN.COM
@@ -37,6 +38,7 @@ As the all.yml.example comments allude, you will need to create a vault.yml file
 
 ```yaml
 # group_vars/vault.yml
+
 vault_nis_servers:
   - ip: "<nis slave/server ip address>"
   - ip: "<nis slave/server ip address>"
