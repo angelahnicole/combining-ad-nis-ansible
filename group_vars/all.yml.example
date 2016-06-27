@@ -8,6 +8,6 @@ ntp_server: myntpserver.com
 ad_domain: ADDOMAIN.COM
 
 # be sure to include these variables in your own group_vars/vault.yml file:
-# note that this use needs to be able add/remove computers
+# note that this user needs to be able add/remove computers
 # vault_ad_user: <AD username>
 # vault_ad_pass: <AD password>
