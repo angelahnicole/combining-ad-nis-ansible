@@ -4,6 +4,8 @@
 
 This playbook combines joining a machine to an AD domain and an NIS server. The hope is to be able to use NIS accounts but authenticate with Active Directory since the servers that we are currently using are littered with NIS UIDs and GIDs but we want to use AD to authenticate.
 
+So far, only `CentOS 6` and `CentOS 7` machines are supported in this playbook.
+
 ## Variable Files
 
 You will need to do a little bit of setup before using this playbook. The first thing to do is to make sure that you have the following variable and host files filled out:
