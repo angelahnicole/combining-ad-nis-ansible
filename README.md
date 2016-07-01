@@ -74,5 +74,28 @@ Before running this playbook, you have to provision the machines in your hosts f
 
 ## Running the playbook
 
-Currently on my todo... still in the process of creating it.
+A typical run of the playbook will look something like this:
+
+```bash
+$ ansible-playbook site.yml --ask-vault-pass
+```
+
+The `--ask-vault-pass` parameter will ask for the password to your vault-created file with the variables `vault_ad_user` and `vault_ad_pass`.
+
+There are a couple of things to keep in mind when running this playbook: 
+- Due to the necessity of using authconfig and adcli (which are can be only called from the command module), running the playbook in its entirety will always return a "changed" of 3. Later versions of this playbook will strive to change that behavior.
+- Every changed file is backed up in place, so do not despair if something goes awry! 
+
+Here is a list of files that *could be* changed/created by the playbook:
+- /etc/sysconfig/network
+- /etc/yp.conf
+- /etc/nsswitch.conf
+- /etc/chrony.conf
+- /etc/ssh/sshd_config
+- /etc/krb5.conf
+- /etc/sssd/sssd.conf
+
+The only files that will be completely 100% clobbered (as opposed to just changing a few lines) are:
+- /etc/krb5.conf
+- etc/sssd/sssd.conf
 
