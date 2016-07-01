@@ -1,5 +1,53 @@
 ---
-- hosts: hosts
+# ------------------------------------------------------------------------
+# CHECK HOST OPERATING SYSTEM
+# ------------------------------------------------------------------------
+- name: Ensure that the host computer can run this playbook
+  hosts: all
+  tasks:
+    - assert: 
+        that: 
+          - ansible_distribution == "CentOS"
+          - ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7"
 
+# ------------------------------------------------------------------------
+# NIS CLIENT CONFIGURATION
+# ------------------------------------------------------------------------
+- name: Make our inventory machines clients of our NIS server
+  hosts: all
+  remote_user: "{{ playbook_remote_user }}"
+  become: true
+  roles:
+    - nis
+
+# ------------------------------------------------------------------------
+# MAKING A HOME DIRECTORY ON LOGIN
+# ------------------------------------------------------------------------
+- name: Make sure a home directory is created on login with oddjob-mkhomedir
+  hosts: all
+  remote_user: "{{ playbook_remote_user }}"
+  become: true
+  roles:
+    - { role: mkhomedir, when: automatically_mkhomedir }
+
+# ------------------------------------------------------------------------
+# ACTIVE DIRECTORY CONFIGURATION
+# ------------------------------------------------------------------------
+- name: Bind an Active Directory domain to our inventory machines. 
+  hosts: all
+  remote_user: "{{ playbook_remote_user }}"
+  become: true
   vars_files:
     - group_vars/vault.yml
+  roles:
+    - ad
+
+# ------------------------------------------------------------------------
+# SSSD CONFIGURATION
+# ------------------------------------------------------------------------
+- name: Join NIS and AD by configuring SSSD
+  hosts: all
+  remote_user: "{{ playbook_remote_user }}"
+  become: true
+  roles:
+    - sssd

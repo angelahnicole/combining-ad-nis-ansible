@@ -1,13 +1,107 @@
 ---
-nis_domain: mynisdomain
-nis_servers:
-  - addr: mynisserver.com
-  - addr: mynisslave.00.com
-  - addr: mynisslave.01.com
-ntp_server: myntpserver.com
-ad_domain: ADDOMAIN.COM
 
-# be sure to include these variables in your own group_vars/vault.yml file:
-# note that this user needs to be able add/remove computers
+# ------------------------------------------------------------------------
+# ANSIBLE SPECIFIC VARS
+# ------------------------------------------------------------------------
+
+# User that ansible will use to log in with
+playbook_remote_user: username
+
+# ------------------------------------------------------------------------
+# NIS VARS
+# ------------------------------------------------------------------------
+
+# The NIS domain name (NOT fqdn)
+nis_domain: ntsg
+
+# A list of addresses of NIS servers. You can either specify the master 
+# NIS server, NIS slave server/s, or both.
+nis_servers:
+  - addr: 0.nis.domain.com
+  - addr: 1.nis.domain.com
+
+# ------------------------------------------------------------------------
+# MKHOMEDIR VARS
+# ------------------------------------------------------------------------
+
+# Whether or not to run the mkhomedir role to automatically create a 
+# directory on login using oddjob-mkhomedir.
+automatically_mkhomedir: true
+
+# Look at the SSSD VARS section for the directory it will create it in
+
+# ------------------------------------------------------------------------
+# NTP VARS
+# ------------------------------------------------------------------------
+
+timezone: "America/Boise"
+
+# Whether or not you want to use the pool servers that come default with
+# chrony, or if you want to specify an NTP server below in ntp_server.
+use_default_ntp_servers: false
+
+# Your preferred ntp servers. This has no effect if use_default_ntp_server
+# is true.
+ntp_servers: 
+  - addr: 0.pool.ntp.org
+  - addr: 1.pool.ntp.org
+
+# ------------------------------------------------------------------------
+# AD VARS
+# ------------------------------------------------------------------------
+
+# The active directory realm / domain. Will be used as the keroberos 
+# domain as well.
+ad_domain: CFC.UMT.EDU
+
+# A list of active directory servers i.e. domain controllers. 
+ad_servers:
+  - addr: 0.ad.domain.com
+  - addr: 1.ad.domain.com
+  - addr: 2.ad.domain.com
+
+# The active directory admin server
+admin_ad_server: admin.ad.domain.com
+
+# ------------------------------------------------------------------------
+# SSSD VARS
+# See http://linux.die.net/man/5/sssd.conf
+# ------------------------------------------------------------------------
+
+# Set a default template for a user's home directory if one is not 
+# specified explicitly by the domain's data provider
+sssd_nss_fallback_homedir: "/home/%u"
+
+# The default shell to use if the provider does not provide one during
+# lookup. This option supersedes any other shell options if it takes effect
+sssd_nss_default_shell: "/bin/bash"
+
+# Override the user's home directory for the AD domain 
+sssd_ad_override_homedir: "/home/%u"
+
+# Use the full name and domain as the user's login name reported to NSS
+sssd_ad_use_fully_qualified_names: false
+
+# Determines if user credentials are also cached in the local LDB cache
+sssd_ad_cache_credentials: true
+
+# Bit mask that indicates which debug levels will be visible. 0x0010 is 
+# the default value as well as the lowest allowed value, 0xFFF0 is the most 
+# verbose mode. This setting overrides the settings from config file.
+sssd_ad_debug_level: 0
+
+# If you want to map a user with a different username than their NIS identity,
+# modify this variable to contain a yaml list of username maps.
+# Example:
+# sssd_krb5_map_users:
+#   - "NIS USERNAME:WIN USERNAME"
+#   - "NIS USERNAME:WIN USERNAME"
+sssd_krb5_map_users: []
+
+# ------------------------------------------------------------------------
+# VAULT VARS
+# ------------------------------------------------------------------------
+# Be sure to include these variables in your own group_vars/vault.yml file
+# Note that this user needs to be able add/remove computers
 # vault_ad_user: <AD username>
 # vault_ad_pass: <AD password>

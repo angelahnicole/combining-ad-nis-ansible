@@ -16,18 +16,33 @@ You will need to do a little bit of setup before using this playbook. The first 
 
 ### all.yml
 
-This has the variables that all hosts will use for the ad, nis, and join roles. There is an example yml file that you template off of.
+This has the variables that all hosts will use for the ad, nis, and join roles. There is an example yml file that you template off of. This file also has descriptions of each variable so you know exactly what you are setting.
 
 ```yaml
 # group_vars/all.yml.example
 
-nis_domain: mynisdomain
-ntp_server: myntpserver.com
-ad_domain: ADDOMAIN.COM
+# ------------------------------------------------------------------------
+# ANSIBLE SPECIFIC VARS
+# ------------------------------------------------------------------------
+
+# User that ansible will use to log in with
+playbook_remote_user: username
+
+# ------------------------------------------------------------------------
+# NIS VARS
+# ------------------------------------------------------------------------
+
+# The NIS domain name (NOT fqdn)
+nis_domain: ntsg
+
+# A list of addresses of NIS servers. You can either specify the master 
+# NIS server, NIS slave server/s, or both.
 nis_servers:
-  - addr: mynisserver.com
-  - addr: mynisslave.00.com
-  - addr: mynisslave.01.com
+  - addr: 0.nis.domain.com
+  - addr: 1.nis.domain.com
+
+# ... (see group_vars/all.yml.example for more)
+
 ```
 
 ### vault.yml
