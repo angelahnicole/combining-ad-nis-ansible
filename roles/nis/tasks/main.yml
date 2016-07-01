@@ -26,8 +26,7 @@
     owner: root 
     group: root
     line: "NISDOMAIN={{ nis_domain }}"
-  notify: 
-    - restart network
+  notify: restart network
 
 # ------------------------------------------------------------------------
 # CONFIGURE NIS SERVERS
@@ -48,6 +47,8 @@
 # ------------------------------------------------------------------------
 # CONFIGURE NSSWITCH
 # Note that there is an end of string assertion to ensure idempotence
+# "Backrefs" means that it won't change anything if nothing matches
+# the regexp, which is desired.
 # ------------------------------------------------------------------------
 
 - name: Modify /etc/nsswitch.conf to include nis after files. The original is backed up. It will not clobber sss configuration."

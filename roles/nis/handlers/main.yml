@@ -12,5 +12,3 @@
 
 - name: restart rpcbind
   service: name=rpcbind state=restarted
-
-

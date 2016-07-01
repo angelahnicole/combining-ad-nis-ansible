@@ -4,8 +4,8 @@
 # AD HANDLERS
 # ------------------------------------------------------------------------
 
-- name: "restart sshd"
+- name: restart sshd
   service: name=sshd state=restarted
 
-- name: "restart chronyd"
+- name: restart chronyd
   service: name=chronyd state=restarted
