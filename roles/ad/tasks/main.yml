@@ -43,9 +43,9 @@
     group: root 
     state: link 
     force: yes
-  when: (not current_zone.stat.exists or not current_zone.stat.islnk) or (current_zone.stat.islnk is defined and current_zone.stat.islnk and current_zone.stat.lnk_source.match(timezone))
+  when: (not current_zone.stat.exists or (current_zone.stat.islnk is defined and not current_zone.stat.islnk)) or (current_zone.stat.islnk is defined and current_zone.stat.islnk and current_zone.stat.lnk_source.match(timezone))
 
-#' ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 # CONFIGURE CHRONY
 # ------------------------------------------------------------------------
 
