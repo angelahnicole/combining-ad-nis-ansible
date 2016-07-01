@@ -1,0 +1,34 @@
+---
+
+# ------------------------------------------------------------------------
+# UPDATE SOFTWARE AND INSTALL PACKAGES NEEDED
+# ------------------------------------------------------------------------
+
+- name: Update system software
+  yum: name=* state=latest
+
+- name: "Install authconfig, sssd"
+  yum: 
+    name: "{{ item }}" 
+    state: latest
+  with_items:
+    - authconfig
+    - sssd
+
+# ------------------------------------------------------------------------
+# CONFIGURE NSS AND PAM STACKS
+# ------------------------------------------------------------------------
+
+- name: Update authentication mechanism to set up the Name Service Switch and PAM stacks
+  command: /usr/sbin/authconfig --enablesssd --enablesssdauth --update
+
+# ------------------------------------------------------------------------
+# CONFIGURE SSSD
+# ------------------------------------------------------------------------
+
+- name: "Configure /etc/sssd/sssd.conf"
+  template: src=sssd.conf.j2 dest=/etc/sssd/sssd.conf owner=root group=root mode=0600
+  notify: restart sssd
+
+- name: Enable the SSSD service to run on boot
+  service: name=sssd enabled=yes

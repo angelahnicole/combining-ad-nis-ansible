@@ -1,0 +1,96 @@
+---
+
+# ------------------------------------------------------------------------
+# UPDATE SOFTWARE AND INSTALL PACKAGES NEEDED
+# ------------------------------------------------------------------------
+
+- name: Update system software
+  yum: name=* state=latest
+
+- name: Install ypbind and rpcbind
+  yum: 
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - rpcbind
+    - ypbind
+
+# ------------------------------------------------------------------------
+# CONFIGURE NISDOMAIN
+# ------------------------------------------------------------------------
+
+- name: "Add NISDOMAIN to the end of /etc/sysconfig/network. The original is backed up."
+  lineinfile:
+    dest: "/etc/sysconfig/network"
+    backup: yes
+    owner: root 
+    group: root
+    line: "NISDOMAIN={{ nis_domain }}"
+  notify: 
+    - restart network
+
+# ------------------------------------------------------------------------
+# CONFIGURE NIS SERVERS
+# ------------------------------------------------------------------------
+
+- name: "Add NIS servers to /etc/yp.conf. The original is backed up."
+  lineinfile: 
+    dest: "/etc/yp.conf"
+    backup: yes
+    owner: root 
+    group: root
+    line: "domain {{ nis_domain }} server {{ item.addr }}"
+  with_items: "{{ nis_servers }}"
+  notify: 
+    - restart ypbind
+    - restart rpcbind
+
+# ------------------------------------------------------------------------
+# CONFIGURE NSSWITCH
+# Note that there is an end of string assertion to ensure idempotence
+# ------------------------------------------------------------------------
+
+- name: Modify /etc/nsswitch.conf to include nis after files. The original is backed up. It will not clobber sss configuration."
+  lineinfile: 
+    dest: "/etc/nsswitch.conf"
+    backup: yes
+    backrefs: yes
+    regexp: "{{ item.regexp }}"
+    owner: root 
+    group: root
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^(passwd:\s+files$)', line: 'passwd:    files nis' }
+    - { regexp: '^(passwd:\s+files sss$)', line: 'passwd:    files nis sss' }
+    - { regexp: '^(shadow:\s+files$)', line: 'shadow:    files nis' }
+    - { regexp: '^(shadow:\s+files sss$)', line: 'shadow:    files nis sss' }
+    - { regexp: '^(group:\s+files$)', line: 'group:    files nis' }
+    - { regexp: '^(group:\s+files sss$)', line: 'group:    files nis sss' }
+    - { regexp: '^(hosts:\s+files dns$)', line: 'hosts:    files nis dns' }
+    - { regexp: '^(netgroup:\s+files$)', line: 'netgroup:    files nis' }
+    - { regexp: '^(netgroup:\s+nisplus$)', line: 'netgroup:    files nis' }
+    - { regexp: '^(automount:\s+files$)', line: 'automount:    files nis' }
+    - { regexp: '^(automount:\s+files nisplus$)', line: 'automount:    files nis' }
+  notify: 
+    - restart ypbind
+    - restart rpcbind
+
+# ------------------------------------------------------------------------
+# ENSURE RPCBIND AND YPBIND ARE ENABLED AND STARTED
+# ------------------------------------------------------------------------
+
+- name: Enable rpcbind and ypbind to run on boot
+  service: 
+    name: "{{ item }}"
+    enabled: yes
+  with_items:
+    - rpcbind
+    - ypbind
+
+- name: Start rpcbind and ypbind
+  service: 
+    name: "{{ item }}"
+    state: started
+  with_items:
+    - rpcbind
+    - ypbind

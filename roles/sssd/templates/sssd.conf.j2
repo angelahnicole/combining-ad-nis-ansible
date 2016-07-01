@@ -1,0 +1,33 @@
+[sssd]
+services = nss, pam, ssh, autofs
+config_file_version = 2
+domains = {{ ad_domain.upper() }}
+
+[nss]
+fallback_homedir = {{ sssd_nss_fallback_homedir }}
+default_shell = {{ sssd_nss_default_shell }}
+
+[domain/{{ ad_domain.upper() }}]
+override_homedir = {{ sssd_ad_override_homedir }}
+use_fully_qualified_names = {{ sssd_ad_use_fully_qualified_names }}
+
+# use keroberos for authentication and active directory as an access provider
+auth_provider = krb5
+krb5_server = {{ ad_servers | join(",", attribute='addr') }}
+krb5_realm = {{ ad_domain.upper() }}
+access_provider = ad
+cache_credentials = {{ sssd_ad_cache_credentials }}
+
+# use NIS for identity
+id_provider = proxy
+proxy_lib_name = nis
+ldap_id_mapping = false
+
+# increase the debug level if needed
+debug_level =  {{ sssd_ad_debug_level }}
+
+# if you want to map a user with a different username than their NIS identity, use this:
+# krb5_map_user = <nis username>:<win username>
+{% if sssd_krb5_map_users|length > 0 %}
+krb5_map_user = {{ sssd_krb5_map_users | join(",") }}
+{% endif %}

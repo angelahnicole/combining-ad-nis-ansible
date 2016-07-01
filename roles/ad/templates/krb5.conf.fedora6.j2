@@ -1,0 +1,24 @@
+[logging]
+ default = FILE:/var/log/krb5libs.log
+ kdc = FILE:/var/log/krb5kdc.log
+ admin_server = FILE:/var/log/kadmind.log
+
+[libdefaults]
+ dns_lookup_realm = true
+ dns_lookup_kdc = true
+ ticket_lifetime = 24h
+ renew_lifetime = 7d
+ forwardable = true
+ default_realm = {{ ad_domain.upper() }}
+
+[realms]
+ {{ ad_domain.upper() }} = {
+  {% for ad_server in ad_servers %}
+  kdc = {{ ad_server.addr }}
+  {% endfor %}
+  admin_server = {{ admin_ad_server }}
+ }
+
+[domain_realm]
+ .{{ ad_domain.lower() }} = {{ ad_domain.upper() }}
+ {{ ad_domain.lower() }} = {{ ad_domain.upper() }}
