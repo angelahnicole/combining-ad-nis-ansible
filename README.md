@@ -28,6 +28,9 @@ This has the variables that all hosts will use for the ad, nis, and join roles. 
 # User that ansible will use to log in with
 playbook_remote_user: username
 
+# The default directory on the remote machine that backups will be moved to
+back_up_dir: "/etc/backups"
+
 # ------------------------------------------------------------------------
 # NIS VARS
 # ------------------------------------------------------------------------
@@ -84,7 +87,7 @@ The `--ask-vault-pass` parameter will ask for the password to your vault-created
 
 There are a couple of things to keep in mind when running this playbook: 
 - Due to the necessity of using authconfig and adcli (which are can be only called from the command module), running the playbook in its entirety will always return a "changed" of 3. Later versions of this playbook will strive to change that behavior.
-- Every changed file is backed up in place, so do not despair if something goes awry! 
+- Every changed file is backed up in place, so do not despair if something goes awry! The backups are, by default, in `/etc/backups`
 
 Here is a list of files that *could be* changed/created by the playbook:
 - /etc/sysconfig/network
