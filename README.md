@@ -36,7 +36,7 @@ back_up_dir: "/etc/backups"
 # ------------------------------------------------------------------------
 
 # The NIS domain name (NOT fqdn)
-nis_domain: ntsg
+nis_domain: nisdomain
 
 # A list of addresses of NIS servers. You can either specify the master 
 # NIS server, NIS slave server/s, or both.
