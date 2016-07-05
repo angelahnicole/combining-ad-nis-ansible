@@ -77,7 +77,7 @@ Before running this playbook, you have to provision the machines in your hosts f
 A typical run of the playbook will look something like this:
 
 ```bash
-$ ansible-playbook site.yml --ask-vault-pass
+$ ansible-playbook -i hosts site.yml --ask-vault-pass
 ```
 
 The `--ask-vault-pass` parameter will ask for the password to your vault-created file with the variables `vault_ad_user` and `vault_ad_pass`.

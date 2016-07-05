@@ -1,8 +1,8 @@
 ---
 # ------------------------------------------------------------------------
-# CHECK HOST OPERATING SYSTEM
+# CHECK HOST OPERATING SYSTEM AND VAULT VARS
 # ------------------------------------------------------------------------
-- name: Ensure that the host computer can run this playbook
+- name: Ensure that the playbook can be ran
   hosts: all
   vars_files:
     - group_vars/vault.yml
